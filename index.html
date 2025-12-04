@@ -18,6 +18,21 @@
   />
 </head>
 <body>
+      <!-- Password Gate -->
+  <div id="gate-overlay" class="gate-overlay">
+    <div class="gate-card">
+      <h1>Welcome</h1>
+      <p>Please enter the wedding website password.</p>
+      <input
+        type="password"
+        id="gate-password"
+        placeholder="Password"
+        autocomplete="off"
+      />
+      <button id="gate-submit" class="btn primary">Enter</button>
+      <p id="gate-error" class="gate-error"></p>
+    </div>
+  </div>
   <!-- Header / Nav -->
   <header class="site-header">
     <div class="container header-inner">
@@ -256,8 +271,8 @@
     </div>
   </section>
 
-   <!-- RSVP -->
-   <section id="rsvp" class="section section-alt">
+  <!-- RSVP -->
+  <section id="rsvp" class="section section-alt">
     <div class="container">
       <h2 class="section-title">RSVP</h2>
       <p class="section-intro">
@@ -266,7 +281,6 @@
       </p>
 
       <form
-        id="rsvp-form"
         name="rsvp"
         method="POST"
         data-netlify="true"
@@ -280,35 +294,29 @@
           </label>
         </p>
 
-        <!-- STEP 1: Look up party by name -->
-        <div class="form-step" id="rsvp-step-1">
+        <div class="form-grid">
           <div class="form-field">
-            <label for="lookup-name">
-              Name (as it appears on your invitation)*
-            </label>
-            <input
-              type="text"
-              id="lookup-name"
-              name="lookup-name"
-              required
-              placeholder="e.g., Stephen Cohen, Rosie Collins"
-            />
+            <label for="name">Full Name*</label>
+            <input type="text" id="name" name="name" required />
           </div>
-          <p id="lookup-message" class="card-note small">
-            We’ll use this to find your party (e.g., your plus one or family).
-          </p>
-          <button id="lookup-button" class="btn outline" type="button">
-            Find my party
-          </button>
-        </div>
 
-        <!-- STEP 2: Party selection + details -->
-        <div class="form-step hidden" id="rsvp-step-2">
           <div class="form-field">
-            <label>Who from your party is joining us on Saturday?</label>
-            <div id="party-list" class="party-list">
-              <!-- Populated by JavaScript -->
-            </div>
+            <label for="email">Email*</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-field">
+            <label for="attending">Will you attend the wedding on Saturday?*</label>
+            <select id="attending" name="attending" required>
+              <option value="">Please choose</option>
+              <option value="accepts">Happily accepts</option>
+              <option value="declines">Regretfully declines</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="guests">Number of guests (including you)*</label>
+            <input type="number" id="guests" name="guests" min="1" max="10" required />
           </div>
 
           <div class="form-field">
@@ -332,11 +340,6 @@
           </div>
 
           <div class="form-field">
-            <label for="email">Best email for updates*</label>
-            <input type="email" id="email" name="email" required />
-          </div>
-
-          <div class="form-field">
             <label for="dietary">Dietary restrictions</label>
             <input
               type="text"
@@ -350,11 +353,11 @@
             <label for="notes">Notes for the couple</label>
             <textarea id="notes" name="notes" rows="3"></textarea>
           </div>
-
-          <button type="submit" class="btn primary form-submit">
-            Submit RSVP
-          </button>
         </div>
+
+        <button type="submit" class="btn primary form-submit">
+          Submit RSVP
+        </button>
       </form>
     </div>
   </section>

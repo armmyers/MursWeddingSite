@@ -14,6 +14,44 @@ if (navToggle && navLinks) {
   });
 }
 
+// ----- Simple password gate ----- //
+(function () {
+    const PASSWORD = "Vannah"; // case-sensitive
+    const overlay = document.getElementById("gate-overlay");
+    const pwInput = document.getElementById("gate-password");
+    const submitBtn = document.getElementById("gate-submit");
+    const errorEl = document.getElementById("gate-error");
+  
+    if (!overlay || !pwInput || !submitBtn) return;
+  
+    // If already unlocked in this browser, skip gate
+    const unlocked = window.localStorage.getItem("wedding_site_unlocked");
+    if (unlocked === "true") {
+      overlay.style.display = "none";
+      return;
+    }
+  
+    function checkPassword() {
+      if (pwInput.value === PASSWORD) {
+        overlay.style.display = "none";
+        window.localStorage.setItem("wedding_site_unlocked", "true");
+      } else {
+        errorEl.textContent = "Incorrect password. Please try again.";
+        pwInput.value = "";
+        pwInput.focus();
+      }
+    }
+  
+    submitBtn.addEventListener("click", checkPassword);
+    pwInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        checkPassword();
+      }
+    });
+  })();
+  
+
 // Smooth-ish scrolling offset for sticky header
 const header = document.querySelector(".site-header");
 if (header) {
