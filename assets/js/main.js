@@ -16,7 +16,7 @@ if (navToggle && navLinks) {
 
 // ----- Simple password gate ----- //
 (function () {
-  const PASSWORD = "Vannah"; // case-sensitive
+  const PASSWORD = "chabella!"; // case-sensitive
   const overlay = document.getElementById("gate-overlay");
   const pwInput = document.getElementById("gate-password");
   const submitBtn = document.getElementById("gate-submit");
