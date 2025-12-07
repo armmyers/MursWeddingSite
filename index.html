@@ -235,171 +235,168 @@
   </section>
 
   <!-- RSVP -->
-  <section id="rsvp" class="section">
+  <section id="rsvp" class="section section-alt">
     <div class="container">
       <h2 class="section-title">RSVP</h2>
       <p class="section-intro">
-        We can’t wait to celebrate with you. Please start by entering your last name
-        to look up your party. If we can’t find you, you’ll still be able to RSVP
-        as an individual guest.
+        We can’t wait to celebrate with you. Please start by entering your
+        <strong>last name</strong> to find your party.
       </p>
 
-      <!-- Look-up step -->
-      <div class="card rsvp-lookup">
-        <label for="lookup-last" class="lookup-label">Enter your last name</label>
-        <div class="lookup-row">
-          <input
-            type="text"
-            id="lookup-last"
-            class="lookup-input"
-            placeholder="Last name"
-            autocomplete="family-name"
-          />
-          <button id="lookup-button" class="btn primary lookup-button" type="button">
-            Find My Party
-          </button>
-        </div>
-        <!-- <p id="lookup-message" class="lookup-message">
-          Tip: try the last name on your invitation. If nothing comes up, you can still
-          RSVP below.
-        </p> -->
-      </div>
-
-      <!-- Party RSVP -->
-      <div id="party-rsvp-step" class="rsvp-step card">
-        <h3 class="rsvp-subtitle">Party RSVP</h3>
-        <p id="party-heading" class="party-heading"></p>
-
-        <form
-          id="party-rsvp-form"
-          name="party-rsvp"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-        >
-          <input type="hidden" name="form-name" value="party-rsvp" />
-          <p class="hidden">
-            <label>Don’t fill this out if you're human:
-              <input name="bot-field" />
-            </label>
-          </p>
-
-          <input type="hidden" name="lookupLastName" id="field-lookup-last" />
-          <input type="hidden" name="partyName" id="field-party-name" />
-
-          <div id="party-members-container" class="party-members"></div>
-
-          <div class="party-extra">
-            <div class="form-field">
-              <label for="party-email">Best email for your party*</label>
-              <input
-                type="email"
-                id="party-email"
-                name="partyEmail"
-                required
-                placeholder="name@example.com"
-              />
-            </div>
-
-            <div class="form-field">
-              <label for="hotel-interest">Interested in a hotel room in our hotel block?</label>
-              <select id="hotel-interest" name="hotelInterest">
-                <option value="">Please choose</option>
-                <option value="yes">Yes, please send us hotel block info</option>
-                <option value="no">No, we’ll arrange our own lodging</option>
-                <option value="maybe">Maybe / not sure yet</option>
-              </select>
-            </div>
-
-            <div class="form-field">
-              <label for="party-notes">Notes for Anna Rose &amp; Matt</label>
-              <textarea
-                id="party-notes"
-                name="partyNotes"
-                rows="3"
-                placeholder="Anything else we should know? (accessibility, song requests, etc.)"
-              ></textarea>
-            </div>
-          </div>
-
-          <button type="submit" class="btn primary form-submit">
-            Submit Party RSVP
-          </button>
-        </form>
-      </div>
-
-      <!-- Solo / fallback RSVP -->
-      <div id="solo-rsvp-step" class="rsvp-step card">
-        <h3 class="rsvp-subtitle">Can’t find your name?</h3>
-        <p class="party-heading">
-          No worries at all — you can still RSVP as an individual guest here.
+      <form
+        name="rsvp"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="rsvp-form card"
+      >
+        <input type="hidden" name="form-name" value="rsvp" />
+        <p class="hidden">
+          <label>
+            Don’t fill this out if you're human:
+            <input name="bot-field" />
+          </label>
         </p>
 
-        <form
-          id="solo-rsvp-form"
-          name="solo-rsvp"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-        >
-          <input type="hidden" name="form-name" value="solo-rsvp" />
-          <p class="hidden">
-            <label>Don’t fill this out if you're human:
-              <input name="bot-field" />
-            </label>
+        <!-- Meta fields Netlify will store -->
+        <input type="hidden" id="selected-party" name="selected_party" />
+        <input type="hidden" id="selected-group" name="selected_group" />
+        <input type="hidden" id="lookup-mode" name="lookup_mode" value="party" />
+        <input type="hidden" id="lookup-last-name" name="lookup_last_name" />
+
+        <!-- Last name lookup -->
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="last-name-lookup">Enter your last name*</label>
+            <input
+              type="text"
+              id="last-name-lookup"
+              autocomplete="family-name"
+              required
+            />
+          </div>
+          <div class="form-field">
+            <label>&nbsp;</label>
+            <button type="button" id="lookup-button" class="btn outline">
+              Find my party
+            </button>
+          </div>
+        </div>
+
+        <p id="lookup-message" class="section-intro small" style="margin-top: 0.4rem;"></p>
+
+        <!-- If there are multiple sub-parties with the same last name -->
+        <div id="party-choice-container" class="form-grid hidden">
+          <div class="form-field">
+            <label for="party-choice">We found multiple parties with that last name. Which one are you?</label>
+            <select id="party-choice"></select>
+          </div>
+        </div>
+
+        <!-- Dynamic per-guest RSVP fields go here -->
+        <div id="party-guests-container" class="form-grid hidden"></div>
+
+        <!-- Party-level info (email, hotel, notes) -->
+        <div id="party-extra-container" class="form-grid hidden">
+          <div class="form-field">
+            <label for="party-email">Email for your party</label>
+            <input
+              type="email"
+              id="party-email"
+              name="party_email"
+              placeholder="So we can reach you if anything changes"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="hotel-interest">Interested in a hotel block?</label>
+            <select id="hotel-interest" name="hotel_interest">
+              <option value="">Please choose</option>
+              <option value="yes">Yes, please send us hotel block info</option>
+              <option value="no">No, we’ll book our own lodging</option>
+              <option value="maybe">Maybe / not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="party-dietary">Dietary notes for your party</label>
+            <textarea
+              id="party-dietary"
+              name="party_dietary"
+              rows="2"
+              placeholder="Kosher-style requests, vegetarian, allergies, etc."
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="party-notes">Notes for the couple</label>
+            <textarea id="party-notes" name="party_notes" rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- Manual / fallback RSVP if lookup fails -->
+        <div id="simple-rsvp-container" class="hidden">
+          <hr style="margin: 1.6rem 0;" />
+          <p class="section-intro small">
+            Can’t find your name? No problem. You can still RSVP for yourself here and
+            we’ll match things up on our side.
           </p>
 
           <div class="form-grid">
             <div class="form-field">
-              <label for="solo-name">Full Name*</label>
-              <input type="text" id="solo-name" name="name" required />
+              <label for="manual-name">Your full name*</label>
+              <input type="text" id="manual-name" name="manual_name" />
             </div>
-
             <div class="form-field">
-              <label for="solo-email">Email*</label>
-              <input type="email" id="solo-email" name="email" required />
+              <label for="manual-email">Email*</label>
+              <input type="email" id="manual-email" name="manual_email" />
             </div>
-
             <div class="form-field">
-              <label for="solo-attending">Will you attend on Saturday?*</label>
-              <select id="solo-attending" name="attending" required>
+              <label for="manual-attending">Will you attend the wedding on Saturday?</label>
+              <select id="manual-attending" name="manual_attending">
                 <option value="">Please choose</option>
                 <option value="accepts">Happily accepts</option>
                 <option value="declines">Regretfully declines</option>
               </select>
             </div>
-
             <div class="form-field">
-              <label for="solo-friday">Coming to Friday welcome party?</label>
-              <select id="solo-friday" name="friday">
+              <label for="manual-friday">Coming to the Friday night welcome party?</label>
+              <select id="manual-friday" name="manual_friday">
                 <option value="">Please choose</option>
-                <option value="yes">Yes, I’ll be there</option>
-                <option value="no">No, I won’t be in town</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
                 <option value="maybe">Maybe / not sure yet</option>
               </select>
             </div>
-
             <div class="form-field">
-              <label for="solo-dietary">Dietary restrictions</label>
+              <label for="manual-dietary">Dietary restrictions</label>
               <input
                 type="text"
-                id="solo-dietary"
-                name="dietary"
+                id="manual-dietary"
+                name="manual_dietary"
                 placeholder="Kosher-style, vegetarian, allergies, etc."
               />
             </div>
-
             <div class="form-field">
-              <label for="solo-notes">Notes for the couple</label>
-              <textarea id="solo-notes" name="notes" rows="3"></textarea>
+              <label for="manual-notes">Notes for the couple</label>
+              <textarea id="manual-notes" name="manual_notes" rows="3"></textarea>
             </div>
           </div>
+        </div>
 
-          <button type="submit" class="btn primary form-submit">
-            Submit Individual RSVP
-          </button>
-        </form>
-      </div>
+        <button
+          type="button"
+          id="manual-rsvp-toggle"
+          class="btn outline"
+          style="margin-top: 1rem;"
+        >
+          I can’t find my name – RSVP manually
+        </button>
+
+        <button type="submit" class="btn primary form-submit">
+          Submit RSVP
+        </button>
+      </form>
     </div>
   </section>
 
