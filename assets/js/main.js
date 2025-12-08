@@ -120,15 +120,13 @@ function normalizeName(str) {
    * You can adjust these numbers however you like.
    */
   const GUESTS = [
-    { first: "Matt", last: "Myers", party: "Myers", group: 1 },
-    { first: "Anna Rose", last: "Collins", party: "Collins", group: 1 },
-    { first: "Tracy", last: "Collins", party: "Collins", group: 1 },
-    { first: "Jimmy", last: "Collins", party: "Collins", group: 1 },
-    { first: "Gaelen", last: "Collins", party: "Collins", group: 1 },
+    { first: "Matt", last: "Myers", party: "Myers", group: 2 },
+    { first: "Anna Rose", last: "Collins", party: "Collins", group: 2 },
+    { first: "Tracy", last: "Collins", party: "Collins", group: 3 },
+    { first: "Jimmy", last: "Collins", party: "Collins", group: 3 },
+    { first: "Gaelen", last: "Collins", party: "Collins", group: 3 },
     { first: "Alice", last: "Myers", party: "Myers", group: 1 },
     { first: "Dave", last: "Myers", party: "Myers", group: 1 },
-  
-    // Collins – sub-parties
     { first: "Mary", last: "Collins", party: "Collins", group: 1 },
     { first: "Seamus", last: "Collins", party: "Collins", group: 1 },
     { first: "Gerard", last: "Collins", party: "Collins", group: 2 },
@@ -140,7 +138,8 @@ function normalizeName(str) {
     { first: "Vivek", last: "Rajeevan", party: "Vu", group: 1 },
     { first: "Melissa", last: "Cohen", party: "Cohen", group: 1 },
     { first: "Max", last: "Smeader", party: "Smeader", group: 1 },
-    { first: "Chloe", last: "Smeader", party: "Smeader", group: 1 },
+    { first: "Chloe", last: "Smeader", party: "Smeader", group: 2 },
+  
     { first: "Kimberle", last: "Hickey", party: "Hickey", group: 1 },
     { first: "Michael", last: "Hickey", party: "Hickey", group: 1 },
     { first: "Debbie", last: "Levy", party: "Levy", group: 1 },
@@ -216,6 +215,7 @@ function normalizeName(str) {
     { first: "Shreya", last: "Roy", party: "Roy", group: 1 },
     { first: "Brumfield", last: "Brumfield", party: "Brumfield", group: 1 },
     { first: "Amelie", last: "Brumfield", party: "Brumfield", group: 1 },
+  
     { first: "Jimmy", last: "Filiakis", party: "Filiakis", group: 1 },
     { first: "Kate", last: "Filiakis", party: "Filiakis", group: 1 },
     { first: "Daniel", last: "Green", party: "Green", group: 1 },
@@ -228,17 +228,23 @@ function normalizeName(str) {
     { first: "Pettet  GF", last: "Pettet", party: "Pettet", group: 1 },
     { first: "Chris", last: "Jregie", party: "Jregie", group: 1 },
     { first: "Erica", last: "Jregie", party: "Jregie", group: 1 },
-    { first: "Aaron", last: "Rohrbaugh", party: "Rohrbaugh", group: 1 },
-    { first: "Brittney", last: "Rohrbaugh", party: "Rohrbaugh", group: 1 },
+  
+    { first: "Aaron", last: "Rohrbaugh", party: "Rohrbaugh", group: 2 },
+    { first: "Brittney", last: "Rohrbaugh", party: "Rohrbaugh", group: 2 },
+  
     { first: "Linda", last: "Ricke", party: "Ricke", group: 1 },
     { first: "Rod", last: "Ricker", party: "Ricker", group: 1 },
     { first: "Uncle Gary", last: "Linebaugh", party: "Linebaugh", group: 1 },
-    { first: "Tony (-)", last: "Pajaziti", party: "Pajaziti", group: 1 },
-    { first: "Tony plus one (-)", last: "Pajaziti", party: "Pajaziti", group: 1 },
+  
+    { first: "Tony (-)", last: "Pajaziti", party: "Pajaziti", group: 2 },
+    { first: "Tony plus one (-)", last: "Pajaziti", party: "Pajaziti", group: 2 },
+  
     { first: "Michael", last: "Eldridge", party: "Eldridge", group: 1 },
     { first: "Eldridge wife (-)", last: "Eldridge", party: "Eldridge", group: 1 },
+  
     { first: "Rick", last: "Hong", party: "Hong", group: 1 },
     { first: "Plus One", last: "Hong", party: "Hong", group: 1 },
+  
     { first: "Mike", last: "", party: "Reynolds", group: 1 },
     { first: "Erin", last: "", party: "Reynolds", group: 1 },
     { first: "Naugle", last: "", party: "Naugle", group: 1 },
@@ -314,32 +320,31 @@ function normalizeName(str) {
     }
   
     function renderGuestsForParty(partyObj) {
-      if (!partyObj) return;
-      clearGuests();
-  
-      guestsContainer.classList.remove("hidden");
-      if (partyExtraContainer) partyExtraContainer.classList.remove("hidden");
-  
-      if (hiddenParty) hiddenParty.value = partyObj.party;
-      if (hiddenGroup) hiddenGroup.value = String(partyObj.group);
-      if (hiddenMode) hiddenMode.value = "party";
-  
-      partyObj.guests.forEach((guest, idx) => {
-        const fullName = [guest.first, guest.last].filter(Boolean).join(" ");
-        const isPlusOne = /plus one/i.test(guest.first || "");
-        const guestIndex = `${guest.party}_${guest.group}_${idx}`;
-  
-        const nameFieldHtml = isPlusOne
-          ? `<input type="text" name="guest_${guestIndex}_name" placeholder="Your plus one" />`
-          : `<span class="guest-name-label">${fullName}</span>
-             <input type="hidden" name="guest_${guestIndex}_name" value="${fullName}" />`;
-  
-        const rowHtml = `
-          <div class="form-field guest-row">
-            <div class="guest-main">
-              <label>
+        if (!partyObj) return;
+        clearGuests();
+      
+        guestsContainer.classList.remove("hidden");
+        if (partyExtraContainer) partyExtraContainer.classList.remove("hidden");
+      
+        if (hiddenParty) hiddenParty.value = partyObj.party;
+        if (hiddenGroup) hiddenGroup.value = String(partyObj.group);
+        if (hiddenMode) hiddenMode.value = "party";
+      
+        partyObj.guests.forEach((guest, idx) => {
+          const fullName = [guest.first, guest.last].filter(Boolean).join(" ");
+          const isPlusOne = /plus one/i.test(guest.first || "");
+          const guestIndex = `${guest.party}_${guest.group}_${idx}`;
+      
+          const nameFieldHtml = isPlusOne
+            ? `<input type="text" name="guest_${guestIndex}_name" placeholder="Your plus one" />`
+            : `<span class="guest-name-label">${fullName}</span>
+               <input type="hidden" name="guest_${guestIndex}_name" value="${fullName}" />`;
+      
+          const rowHtml = `
+            <div class="form-field guest-row">
+              <div class="guest-name-cell">
                 ${nameFieldHtml}
-              </label>
+              </div>
               <div class="guest-checkboxes">
                 <label class="inline-label">
                   <input type="checkbox" name="guest_${guestIndex}_attending" value="yes" />
@@ -351,18 +356,10 @@ function normalizeName(str) {
                 </label>
               </div>
             </div>
-            <div class="guest-extra">
-              <input
-                type="text"
-                name="guest_${guestIndex}_dietary"
-                placeholder="Dietary notes for this guest"
-              />
-            </div>
-          </div>
-        `;
-        guestsContainer.insertAdjacentHTML("beforeend", rowHtml);
-      });
-    }
+          `;
+          guestsContainer.insertAdjacentHTML("beforeend", rowHtml);
+        });
+      }
   
     function showManualOnly() {
       clearGuests();

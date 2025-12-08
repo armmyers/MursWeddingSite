@@ -672,3 +672,49 @@ body::after {
   font-size: 0.85rem;
   min-height: 1.1rem;
 }
+
+/* RSVP guest rows: one per row */
+#party-guests-container {
+  grid-template-columns: 1fr; /* override 2-column form grid */
+}
+
+.guest-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-block: 0.25rem;
+  border-bottom: 1px dashed rgba(226, 212, 197, 0.7);
+}
+
+.guest-row:last-child {
+  border-bottom: none;
+}
+
+.guest-name-cell {
+  font-weight: 600;
+}
+
+.guest-name-cell input[type="text"] {
+  max-width: 220px;
+}
+
+.guest-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.inline-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.88rem;
+}
+
+@media (min-width: 640px) {
+  .guest-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
