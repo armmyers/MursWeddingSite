@@ -102,11 +102,18 @@ if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
 
-// ---------- RSVP PARTY LOOKUP LOGIC ----------
+// ---------- RSVP PARTY LOOKUP + NETLIFY SUBMISSION ----------
 
-// Helper: normalize strings for matching last names
+// Helper: normalize strings for matching
 function normalizeName(str) {
   return (str || "").toLowerCase().replace(/[^a-z]/g, "");
+}
+
+// Helper: encode data for Netlify form POST
+function encodeNetlify(data) {
+  return Object.keys(data)
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
 }
 
 /**
@@ -117,23 +124,28 @@ function normalizeName(str) {
  * - group: sub-party for families with the same last name (1, 2, …)
  */
 const GUESTS = [
+  { first: "Matt", last: "Myers", party: "Myers", group: 2 },
+  { first: "Anna Rose", last: "Collins", party: "Collins", group: 2 },
+
   { first: "Tracy", last: "Collins", party: "Collins", group: 3 },
   { first: "Jimmy", last: "Collins", party: "Collins", group: 3 },
   { first: "Gaelen", last: "Collins", party: "Collins", group: 3 },
+
   { first: "Alice", last: "Myers", party: "Myers", group: 1 },
   { first: "Dave", last: "Myers", party: "Myers", group: 1 },
   { first: "Mary", last: "Collins", party: "Collins", group: 1 },
   { first: "Seamus", last: "Collins", party: "Collins", group: 1 },
+
   { first: "Gerard", last: "Collins", party: "Collins", group: 2 },
-  { first: "Mary", last: "Keane", party: "Collins", group: 2 },
+  { first: "Mary", last: "", party: "Collins", group: 2 },
 
   { first: "Cynthia", last: "Amelar", party: "Amelar", group: 1 },
-  { first: "Katie", last: "Hines", party: "Hines", group: 1 },
+  { first: "Katie", last: "Heinz", party: "Heinz", group: 1 },
   { first: "Theresa", last: "Vu", party: "Vu", group: 1 },
   { first: "Vivek", last: "Rajeevan", party: "Vu", group: 1 },
   { first: "Melissa", last: "Cohen", party: "Cohen", group: 1 },
   { first: "Max", last: "Smeader", party: "Smeader", group: 1 },
-  { first: "Chloe", last: "Smeader", party: "Cohen", group: 1 },
+  { first: "Chloe", last: "Smeader", party: "Smeader", group: 2 },
 
   { first: "Kimberle", last: "Hickey", party: "Hickey", group: 1 },
   { first: "Michael", last: "Hickey", party: "Hickey", group: 1 },
@@ -150,13 +162,13 @@ const GUESTS = [
   { first: "Sahitya", last: "Maranganti", party: "Maranganti", group: 1 },
   { first: "Gustavo", last: "", party: "Maranganti", group: 1 },
   { first: "Sandeep", last: "Sainath", party: "Sainath", group: 1 },
-  { first: "Nayara", last: "", party: "Sainath", group: 1 },
+  { first: "Nayaya", last: "", party: "Sainath", group: 1 },
   { first: "Kunal", last: "Kuldeep", party: "Kuldeep", group: 1 },
   { first: "Micah", last: "Kuldeep", party: "Kuldeep", group: 1 },
   { first: "Alex", last: "Zhao", party: "Zhao", group: 1 },
   { first: "Lisa", last: "Zhao", party: "Zhao", group: 1 },
   { first: "Satya", last: "Godavarthi", party: "Godavarthi", group: 1 },
-  { first: "Plus One", last: "Godavarthi", party: "Godavarthi", group: 1 },
+  { first: "Satya wife (?)", last: "Godavarthi", party: "Godavarthi", group: 1 },
   { first: "Sandy", last: "Backerman", party: "Backerman", group: 1 },
   { first: "David", last: "Backerman", party: "Backerman", group: 1 },
   { first: "Lynda", last: "Kreitzer", party: "Kreitzer", group: 1 },
@@ -177,7 +189,7 @@ const GUESTS = [
   { first: "Rosemary", last: "Kenney", party: "Kenney", group: 1 },
   { first: "Heidi", last: "Studer", party: "Studer", group: 1 },
   { first: "Sarah", last: "Childs", party: "Childs", group: 1 },
-  { first: "Matt", last: "Golino", party: "Golino", group: 1 },
+  { first: "Golino", last: "Golino", party: "Golino", group: 1 },
   { first: "Plus One", last: "Golino", party: "Golino", group: 1 },
   { first: "Stephen", last: "Haley", party: "Haley", group: 1 },
   { first: "Ryan", last: "Burke", party: "Burke", group: 1 },
@@ -199,16 +211,16 @@ const GUESTS = [
   { first: "Meena", last: "Brown", party: "Brown", group: 1 },
   { first: "Ralph", last: "Kimbell", party: "Kimbell", group: 1 },
   { first: "Ashley", last: "Killebrew", party: "Killebrew", group: 1 },
-  { first: "Jaye", last: "", party: "Killebrew", group: 1 },
+  { first: "Ashley boyfriend Jaye", last: "Killebrew", party: "Killebrew", group: 1 },
   { first: "Hillary", last: "Lloyd", party: "Lloyd", group: 1 },
   { first: "Luther", last: "Lloyd", party: "Lloyd", group: 1 },
   { first: "Tati", last: "Boyd", party: "Boyd", group: 1 },
   { first: "Jeff", last: "Boyd", party: "Boyd", group: 1 },
   { first: "Takis", last: "Chronis", party: "Chronis", group: 1 },
-  { first: "Plus One", last: "Chronis", party: "Chronis", group: 1 },
+  { first: "Takis' Wife", last: "Chronis", party: "Chronis", group: 1 },
   { first: "Sayan", last: "Roy", party: "Roy", group: 1 },
   { first: "Shreya", last: "Roy", party: "Roy", group: 1 },
-  { first: "Alex", last: "Brumfield", party: "Brumfield", group: 1 },
+  { first: "Brumfield", last: "Brumfield", party: "Brumfield", group: 1 },
   { first: "Amelie", last: "Brumfield", party: "Brumfield", group: 1 },
 
   { first: "Jimmy", last: "Filiakis", party: "Filiakis", group: 1 },
@@ -218,9 +230,9 @@ const GUESTS = [
   { first: "Emily", last: "Swanson", party: "Swanson", group: 1 },
   { first: "Nicholas", last: "McGilvary", party: "McGilvary", group: 1 },
   { first: "Claire", last: "McGilvary", party: "McGilvary", group: 1 },
-  { first: "Jacob", last: "David", party: "David", group: 1 },
-  { first: "Thomas", last: "Pettet", party: "Pettet", group: 1 },
-  { first: "Plus One", last: "Pettet", party: "Pettet", group: 1 },
+  { first: "Happy", last: "David", party: "David", group: 1 },
+  { first: "Pettet", last: "Pettet", party: "Pettet", group: 1 },
+  { first: "Pettet GF", last: "Pettet", party: "Pettet", group: 1 },
   { first: "Chris", last: "Jregie", party: "Jregie", group: 1 },
   { first: "Erica", last: "Jregie", party: "Jregie", group: 1 },
 
@@ -232,10 +244,10 @@ const GUESTS = [
   { first: "Uncle Gary", last: "Linebaugh", party: "Linebaugh", group: 1 },
 
   { first: "Tony", last: "Pajaziti", party: "Pajaziti", group: 2 },
-  { first: "Plus One", last: "Pajaziti", party: "Pajaziti", group: 2 },
+  { first: "Tony plus one", last: "Pajaziti", party: "Pajaziti", group: 2 },
 
   { first: "Michael", last: "Eldridge", party: "Eldridge", group: 1 },
-  { first: "Plus One", last: "Eldridge", party: "Eldridge", group: 1 },
+  { first: "Eldridge wife", last: "Eldridge", party: "Eldridge", group: 1 },
 
   { first: "Rick", last: "Hong", party: "Hong", group: 1 },
   { first: "Plus One", last: "Hong", party: "Hong", group: 1 },
@@ -245,21 +257,21 @@ const GUESTS = [
   { first: "Naugle", last: "Naugle", party: "Naugle", group: 1 },
   { first: "Bree", last: "Naugle", party: "Naugle", group: 1 },
   { first: "Devin", last: "Johnson", party: "Johnson", group: 1 },
-  { first: "Anna", last: "Johnson", party: "Johnson", group: 1 },
-  { first: "Drew Vincent", last: "", party: "Vincent", group: 1 },
+  { first: "Wife Devin Johnson", last: "Johnson", party: "Johnson", group: 1 },
+  { first: "Drew Vincent", last: "Vincent", party: "Vincent", group: 1 },
   { first: "Rich", last: "Schuck", party: "Schuck", group: 1 },
-  { first: "Faye", last: "Shuck", party: "Schuck", group: 1 },
-  { first: "Bernice", last: "Bienenfeld", party: "Bienenfeld", group: 1 },
-  { first: "Madeline", last: "Murray", party: "Murray", group: 1 },
-  { first: "John", last: "Murray", party: "Murray", group: 1 },
-  { first: "Tod", last: "Rubin", party: "Rubin", group: 1 },
-  { first: "Leslie", last: "Rubin", party: "Rubin", group: 1 },
-  { first: "Manuel", last: "Medina", party: "Medina", group: 1 },
+  { first: "Faye", last: "Schuck", party: "Schuck", group: 1 },
+  { first: "Bernice Bienenfeld", last: "Bienenfeld", party: "Bienenfeld", group: 1 },
+  { first: "Madeleine", last: "", party: "", group: 1 },
+  { first: "John", last: "", party: "", group: 1 },
+  { first: "Tod Rubin?", last: "Rubin", party: "Rubin", group: 1 },
+  { first: "Leslie Rubin?", last: "Rubin", party: "Rubin", group: 1 },
+  { first: "Manny", last: "Medina", party: "Medina", group: 1 },
   { first: "Sue", last: "Medina", party: "Medina", group: 1 },
   { first: "Shari", last: "", party: "", group: 1 },
   { first: "Steve", last: "", party: "", group: 1 },
   { first: "Kim", last: "Costigan", party: "Costigan", group: 1 },
-  { first: "Mike", last: "Costigan", party: "Costigan", group: 1 },
+  { first: "Mike", last: "Costigan", party: "Costigan", group: 1 }
 ];
 
 // Build a map keyed by "party::group"
@@ -305,11 +317,10 @@ function setupRSVPPartyLookup() {
   const hiddenGroup = document.getElementById("selected-group");
   const hiddenMode = document.getElementById("lookup-mode");
   const hiddenLast = document.getElementById("lookup-last-name");
-  const guestsSummaryField = document.getElementById("party-guests-summary");
 
   const form = document.querySelector('form[name="rsvp"]');
 
-  if (!lastNameInput || !lookupBtn || !guestsContainer) return;
+  if (!lastNameInput || !lookupBtn || !guestsContainer || !form) return;
 
   function clearGuests() {
     guestsContainer.innerHTML = "";
@@ -464,68 +475,134 @@ function setupRSVPPartyLookup() {
     });
   }
 
-  // ---- Single Netlify submit per party: fill summary field, then let form submit normally ----
-  if (form) {
-    form.addEventListener("submit", () => {
-      const mode = hiddenMode ? hiddenMode.value : "party";
-      const isPartyMode =
-        mode === "party" && !guestsContainer.classList.contains("hidden");
+  // ------------- Netlify submission (one row per person) -----------------
 
-      if (!isPartyMode) {
-        // Manual RSVP or no party rows; nothing special to do
-        return;
-      }
+  function submitPartyGuests() {
+    const guestRows = guestsContainer.querySelectorAll(".guest-row");
+    if (!guestRows.length) {
+      alert("Please look up your last name and confirm your party first.");
+      return;
+    }
 
-      const rows = guestsContainer.querySelectorAll(".guest-row");
-      if (!rows.length) return;
+    const hotelInterestEl = form.querySelector('[name="hotel_interest"]');
+    const unableEl = form.querySelector('[name="party_unable_attend"]');
+    const dietaryEl = form.querySelector('[name="party_dietary"]');
+    const notesEl = form.querySelector('[name="party_notes"]');
+    const emailEl = form.querySelector('[name="party_email"]');
 
-      const summaryLines = [];
+    const baseData = {
+      "form-name": form.getAttribute("name") || "rsvp",
+      selected_party: hiddenParty ? hiddenParty.value || "" : "",
+      selected_group: hiddenGroup ? hiddenGroup.value || "" : "",
+      lookup_mode: "party",
+      lookup_last_name: hiddenLast ? hiddenLast.value || "" : "",
+      party_email: emailEl ? emailEl.value.trim() : "",
+      hotel_interest: hotelInterestEl ? hotelInterestEl.value || "" : "",
+      party_unable_attend: unableEl && unableEl.checked ? "yes" : "no",
+      party_dietary: dietaryEl ? dietaryEl.value || "" : "",
+      party_notes: notesEl ? notesEl.value || "" : "",
+      submission_type: "party-guest"
+    };
 
-      rows.forEach((row) => {
-        const isPlusOne = row.dataset.plusOne === "true";
-        const textNameInput = row.querySelector(
-          'input[name$="_name"][type="text"]'
-        );
-        const hiddenNameInput = row.querySelector(
-          'input[name$="_name"][type="hidden"]'
-        );
-        const nameSpan = row.querySelector(".guest-name-label");
+    const requests = [];
 
-        let baseName = "";
-        if (textNameInput) {
-          baseName = textNameInput.value.trim();
-        } else if (hiddenNameInput) {
-          baseName = hiddenNameInput.value.trim();
-        } else if (nameSpan) {
-          baseName = nameSpan.textContent.trim();
-        }
+    guestRows.forEach((row) => {
+      const nameInput =
+        row.querySelector('input[name$="_name"]') || row.querySelector("input[type='text']");
+      const attendingEl = row.querySelector(".guest-attending");
+      const fridayEl = row.querySelector(".guest-friday");
 
-        let guestName;
-        if (isPlusOne) {
-          const display = baseName || "Name not provided";
-          guestName = `Plus One (Name: ${display})`;
-        } else {
-          guestName = baseName || "Guest";
-        }
+      const guestName = nameInput ? nameInput.value.trim() : "";
+      const attending = attendingEl && attendingEl.checked ? "yes" : "no";
+      const friday = fridayEl && fridayEl.checked ? "yes" : "no";
 
-        const attendingBox = row.querySelector(".guest-attending");
-        const fridayBox = row.querySelector(".guest-friday");
-        const attending = attendingBox && attendingBox.checked ? "yes" : "no";
-        const friday = fridayBox && fridayBox.checked ? "yes" : "no";
+      // If this is a plus-one row and still empty, skip
+      if (!guestName) return;
 
-        summaryLines.push(
-          `${guestName} | Attending Saturday: ${
-            attending === "yes" ? "yes" : "no"
-          } | Friday welcome: ${friday === "yes" ? "yes" : "no"}`
-        );
-      });
+      const data = {
+        ...baseData,
+        guest_name: guestName,
+        guest_attending: attending,
+        guest_friday: friday
+      };
 
-      if (guestsSummaryField) {
-        guestsSummaryField.value = summaryLines.join("\n");
-      }
-      // No preventDefault here: Netlify gets ONE submission with the summary field filled
+      requests.push(
+        fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: encodeNetlify(data)
+        })
+      );
     });
+
+    if (!requests.length) {
+      alert("Please check at least one guest or fill in the plus-one name.");
+      return;
+    }
+
+    Promise.all(requests)
+      .then(() => {
+        if (messageEl) {
+          messageEl.textContent = "Thank you! We’ve recorded your RSVP.";
+        }
+        form.reset();
+        clearGuests();
+        if (hiddenParty) hiddenParty.value = "";
+        if (hiddenGroup) hiddenGroup.value = "";
+        if (hiddenMode) hiddenMode.value = "party";
+        if (hiddenLast) hiddenLast.value = "";
+      })
+      .catch(() => {
+        alert("Something went wrong submitting your RSVP. Please try again.");
+      });
   }
+
+  function submitManualGuest() {
+    const nameEl = form.querySelector('[name="manual_name"]');
+    const emailEl = form.querySelector('[name="manual_email"]');
+    const attendingEl = form.querySelector('[name="manual_attending"]');
+    const fridayEl = form.querySelector('[name="manual_friday"]');
+    const dietaryEl = form.querySelector('[name="manual_dietary"]');
+    const notesEl = form.querySelector('[name="manual_notes"]');
+
+    const data = {
+      "form-name": form.getAttribute("name") || "rsvp",
+      lookup_mode: "manual",
+      submission_type: "manual-guest",
+      manual_name: nameEl ? nameEl.value || "" : "",
+      manual_email: emailEl ? emailEl.value || "" : "",
+      manual_attending: attendingEl ? attendingEl.value || "" : "",
+      manual_friday: fridayEl ? fridayEl.value || "" : "",
+      manual_dietary: dietaryEl ? dietaryEl.value || "" : "",
+      manual_notes: notesEl ? notesEl.value || "" : ""
+    };
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encodeNetlify(data)
+    })
+      .then(() => {
+        if (messageEl) {
+          messageEl.textContent = "Thank you! We’ve recorded your RSVP.";
+        }
+        form.reset();
+        if (manualContainer) manualContainer.classList.add("hidden");
+      })
+      .catch(() => {
+        alert("Something went wrong submitting your RSVP. Please try again.");
+      });
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const mode = hiddenMode ? hiddenMode.value || "party" : "party";
+    if (mode === "manual") {
+      submitManualGuest();
+    } else {
+      submitPartyGuests();
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", setupRSVPPartyLookup);
