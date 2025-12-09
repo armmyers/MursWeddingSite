@@ -49,7 +49,7 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#details">Details</a></li>
           <li><a href="#travel">Travel</a></li>
-          <li><a href="#registry">Registry</a></li>
+          <!-- <li><a href="#registry">Registry</a></li> -->
           <li><a href="#rsvp">RSVP</a></li>
         </ul>
       </nav>
@@ -154,6 +154,13 @@
         <h3 class="details-subtitle">Attire</h3>
         <p>
           Black-Tie Optional. Please avoid white, ivory, or very pale cream.
+        </p>
+      </div>
+
+      <div class="details-extra">
+        <h3 class="details-subtitle">Important Notes</h3>
+        <p>
+          We've chosen to have a child-free wedding. Please let us know if you have any questions.
         </p>
       </div>
 
@@ -298,41 +305,58 @@
 
         <!-- Party-level info (email, hotel, notes) -->
         <div id="party-extra-container" class="form-grid hidden">
-          <div class="form-field">
-            <label for="party-email">Email for your party</label>
-            <input
-              type="email"
-              id="party-email"
-              name="party_email"
-              placeholder="So we can reach you if anything changes"
-            />
+            <div class="form-field">
+              <label for="party-email">Email for your party</label>
+              <input
+                type="email"
+                id="party-email"
+                name="party_email"
+                placeholder="So we can reach you if anything changes"
+              />
+            </div>
+          
+            <div class="form-field">
+              <label for="hotel-interest">Interested in a hotel block?</label>
+              <select id="hotel-interest" name="hotel_interest">
+                <option value="">Please choose</option>
+                <option value="yes">Yes, please send us hotel block info</option>
+                <option value="no">No, we’ll book our own lodging</option>
+                <option value="maybe">Maybe / not sure yet</option>
+              </select>
+            </div>
+          
+            <!-- NEW: whole-party unable-to-attend checkbox -->
+            <div class="form-field">
+              <label class="inline-label">
+                <input
+                  type="checkbox"
+                  id="party-unable-attend"
+                  name="party_unable_attend"
+                  value="yes"
+                />
+                Not able to attend the wedding or welcome party
+              </label>
+              <span class="card-note small">
+                (If you check this, you don’t need to mark individual guests as attending.)
+              </span>
+            </div>
+          
+            <div class="form-field">
+              <label for="party-dietary">Dietary notes for your party</label>
+              <textarea
+                id="party-dietary"
+                name="party_dietary"
+                rows="2"
+                placeholder="Kosher-style requests, vegetarian, allergies, etc."
+              ></textarea>
+            </div>
+          
+            <div class="form-field">
+              <label for="party-notes">Notes for the couple</label>
+              <textarea id="party-notes" name="party_notes" rows="3"></textarea>
+            </div>
           </div>
-
-          <div class="form-field">
-            <label for="hotel-interest">Interested in a hotel block?</label>
-            <select id="hotel-interest" name="hotel_interest">
-              <option value="">Please choose</option>
-              <option value="yes">Yes, please send us hotel block info</option>
-              <option value="no">No, we’ll book our own lodging</option>
-              <option value="maybe">Maybe / not sure yet</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="party-dietary">Dietary notes for your party</label>
-            <textarea
-              id="party-dietary"
-              name="party_dietary"
-              rows="2"
-              placeholder="Kosher-style requests, vegetarian, allergies, etc."
-            ></textarea>
-          </div>
-
-          <div class="form-field">
-            <label for="party-notes">Notes for the couple</label>
-            <textarea id="party-notes" name="party_notes" rows="3"></textarea>
-          </div>
-        </div>
+          
 
         <!-- Manual / fallback RSVP if lookup fails -->
         <div id="simple-rsvp-container" class="hidden">
