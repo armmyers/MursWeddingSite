@@ -464,46 +464,24 @@ function setupRSVPPartyLookup() {
     });
   }
 
-  // ---- Multi-row Netlify submit: one submission per person in the party ----
+  // ---- Single Netlify submit per party: fill summary field, then let form submit normally ----
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", () => {
       const mode = hiddenMode ? hiddenMode.value : "party";
       const isPartyMode =
         mode === "party" && !guestsContainer.classList.contains("hidden");
 
-      // If not using party lookup (manual fallback), let Netlify handle it normally
       if (!isPartyMode) {
+        // Manual RSVP or no party rows; nothing special to do
         return;
       }
-
-      e.preventDefault(); // custom multi-submit for party mode
 
       const rows = guestsContainer.querySelectorAll(".guest-row");
-      if (!rows.length) {
-        form.submit(); // nothing rendered, just fall back
-        return;
-      }
-
-      const partyName = hiddenParty ? hiddenParty.value : "";
-      const partyGroup = hiddenGroup ? hiddenGroup.value : "";
-      const lookupLast = hiddenLast ? hiddenLast.value : "";
-
-      const partyEmailEl = document.getElementById("party-email");
-      const hotelEl = document.getElementById("hotel-interest");
-      const unableEl = document.getElementById("party-unable-attend");
-      const partyDietaryEl = document.getElementById("party-dietary");
-      const partyNotesEl = document.getElementById("party-notes");
-
-      const partyEmail = partyEmailEl ? partyEmailEl.value.trim() : "";
-      const hotelInterest = hotelEl ? (hotelEl.value || "") : "";
-      const partyUnable = unableEl && unableEl.checked ? "yes" : "no";
-      const partyDietary = partyDietaryEl ? partyDietaryEl.value.trim() : "";
-      const partyNotes = partyNotesEl ? partyNotesEl.value.trim() : "";
+      if (!rows.length) return;
 
       const summaryLines = [];
-      const submissions = [];
 
-      rows.forEach((row, idx) => {
+      rows.forEach((row) => {
         const isPlusOne = row.dataset.plusOne === "true";
         const textNameInput = row.querySelector(
           'input[name$="_name"][type="text"]'
@@ -532,8 +510,7 @@ function setupRSVPPartyLookup() {
 
         const attendingBox = row.querySelector(".guest-attending");
         const fridayBox = row.querySelector(".guest-friday");
-        const attending =
-          attendingBox && attendingBox.checked ? "yes" : "no";
+        const attending = attendingBox && attendingBox.checked ? "yes" : "no";
         const friday = fridayBox && fridayBox.checked ? "yes" : "no";
 
         summaryLines.push(
@@ -541,50 +518,12 @@ function setupRSVPPartyLookup() {
             attending === "yes" ? "yes" : "no"
           } | Friday welcome: ${friday === "yes" ? "yes" : "no"}`
         );
-
-        const payload = {
-          "form-name": "rsvp", // MUST match your form name
-          guest_name: guestName,
-          guest_attending_saturday: attending,
-          guest_attending_friday: friday,
-
-          party_last_name: partyName,
-          party_group: partyGroup,
-          party_email: partyEmail,
-          party_hotel_interest: hotelInterest,
-          party_unable_attend: partyUnable,
-          party_dietary_notes: partyDietary,
-          party_notes: partyNotes,
-
-          lookup_last_name: lookupLast,
-          party_submission_index: String(idx),
-        };
-
-        submissions.push(
-          fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(payload).toString(),
-          })
-        );
       });
 
       if (guestsSummaryField) {
         guestsSummaryField.value = summaryLines.join("\n");
       }
-
-      try {
-        await Promise.all(submissions);
-        alert("Thank you for your RSVP!");
-        form.reset();
-        clearGuests();
-        if (partyExtraContainer) partyExtraContainer.classList.add("hidden");
-      } catch (err) {
-        console.error("RSVP submission error", err);
-        alert(
-          "Something went wrong submitting your RSVP. Please try again or contact us directly."
-        );
-      }
+      // No preventDefault here: Netlify gets ONE submission with the summary field filled
     });
   }
 }
