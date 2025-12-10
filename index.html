@@ -108,7 +108,7 @@
         </p>
         <p style="text-align:center; font-size:1.1rem;">
             Address: 116 W Congress St, Savannah, GA 31401 <br/>
-            (Second Floor, Bamboo Room)
+            (Second Floor, The Bamboo Room Tiki Bar)
           </p>
       </div>
 
@@ -154,13 +154,21 @@
         </div>
       </div>
 
-      <!-- Attire -->
-      <div class="details-extra">
-        <h3 class="details-subtitle">Attire</h3>
-        <p>
-          Black-Tie Optional.
-        </p>
-      </div>
+            <!-- Attire -->
+            <div class="details-extra">
+                <p style="text-align:center; font-size:1.1rem;">
+                    Address: 102 E Broad St, Savannah, GA 31401
+                  </p>
+              </div>
+
+            <!-- Attire -->
+            <div class="details-extra">
+                <h3 class="details-subtitle">Attire</h3>
+                <p>
+                  Friday Welcome Party: Casual
+                  <br>Wedding: Black-Tie Optional
+                </p>
+              </div>
 
       <div class="details-extra">
         <h3 class="details-subtitle">Child-Free Wedding</h3>
@@ -186,43 +194,48 @@
   <section id="travel" class="section travel-section">
     <div class="container travel-wrapper">
       <h2 class="section-title">Travel &amp; Stay</h2>
+      <!-- MAP IMAGE INSERTED HERE -->
+    <div class="travel-map">
+        <img src="images/map.png" alt="Savannah Map - Wedding Weekend" />
+    </div>
   
       <div class="travel-content card-overlay">
-        <h3>Getting to Savannah</h3>
+        <h3>Getting to Savannah and Parking</h3>
         <p>
           The nearest airport is <strong>Savannah/Hilton Head International (SAV)</strong>.
-          Rideshare, taxis, and rental cars are all easily available.
+          Rideshare and rental cars are easily available.
         </p>
         <p>
           If you’re driving, there are multiple parking options in the Historic District.
-          (list parking decks)
+          See map above for parking close to Sorry Charlie's Oyster Bar for the Friday evening welcome party, and near Cha Bella for the wedding. Convenient parking locations include:
+          <ul>
+            <li><strong>Whitaker Street Car Park</strong>  7 Whitaker St, Savannah, GA 31401</li>
+            <li><strong>State Street Car Park</strong>  100 E State St, Savannah, GA 31401</li>
+            <li><strong>Bryan Street Car Park</strong>  100 E Bryan St, Savannah, GA 31401</li>
+            <li><strong>Parking Lot Bay Street</strong>  620 E River St, Savannah, GA 31401</li>
+            <li><strong>Parking Lot Broughton Street</strong>  537 E Broughton St, Savannah, GA 31401</li>
+          </ul>
+        There is also street parking available near Cha Bella and Sorry Charlie's. 
         </p>
   
         <hr/>
   
         <h3>Where to Stay</h3>
         <p>
-          We recommend staying in or near the <strong>Historic District</strong>.
-        </p>
-        <ul>
-          <li>Historic District</li>
-          <li>Near River Street</li>
-          <li>Forsyth Park area</li>
-        </ul>
-        <p class="note">
-          We’ll update here as soon as hotel blocks are confirmed. (update)
+          We have acquired a courtesy hotel block of rooms in the AC Hotel Savannah Historic District, with rates discounted by around 20%. Please let us know in the RSVP if you are interested in a hotel block room for Friday night, Saturday night, or both nights.
+          <br><br>If you prefer to book at a different location, we recommend staying in the <strong>North Historic District</strong>.
         </p>
   
         <hr/>
   
-        <h3>Our Favorite Things To Do in Savannah</h3>
+        <h3>Our Favorite Places in Savannah</h3>
         <ul>
-          <li><strong>Walk Forsyth Park</strong> — iconic live oaks, Spanish moss, fountains.</li>
-          <li><strong>River Street</strong> — cobblestones, bars, candy shops, waterfront views.</li>
-          <li><strong>Historic Squares</strong> — 22 beautiful parks, perfect for wandering.</li>
-          <li><strong>Ghost Tours</strong> — Savannah is famously haunted 👻</li>
-          <li><strong>Take a Carriage Ride</strong> through the old city.</li>
-          <li><strong>Brunch & Cocktails</strong> at Collins Quarter or The Olde Pink House.</li>
+          <li><strong>Wormsloe State Historic Site</strong> Great place to walk under the massive Live Oak trees.</li>
+          <li><strong>River Street</strong> Cool bars, cobblestone paths, and views of the river.</li>
+          <li><strong>Forsyth Park</strong> Our favorite park in Savannah!</li>
+          <li><strong>Java Burrito Company</strong> AMAZING coffee and burrito bar. Puts Chipotle to shame.</li>
+          <li><strong>The Clyde Market</strong> Perfect for breakfast and they make the best cappuccinos.</li>
+
         </ul>
       </div>
     </div>
@@ -343,7 +356,7 @@
             </div>
           
             <!-- NEW: whole-party unable-to-attend checkbox -->
-            <div class="form-field">
+            <!-- <div class="form-field">
               <label class="inline-label">
                 <input
                   type="checkbox"
@@ -356,7 +369,7 @@
               <span class="card-note small">
                 (If you check this, you don’t need to mark individual guests as attending.)
               </span>
-            </div>
+            </div> -->
           
             <div class="form-field">
               <label for="party-dietary">Dietary notes for your party</label>
@@ -425,14 +438,30 @@
           </div>
         </div>
 
-        <button
+        <!-- <button
           type="button"
           id="manual-rsvp-toggle"
           class="btn outline"
           style="margin-top: 1rem;"
         >
           I can’t find my name
-        </button>
+        </button> -->
+
+        <!-- Whole-party unable-to-attend (always visible) -->
+        <div class="form-field" style="margin-top: 1.2rem;">
+            <label class="inline-label">
+            <input
+                type="checkbox"
+                id="party-unable-attend"
+                name="party_unable_attend"
+                value="yes"
+            />
+            Not able to attend the wedding or welcome party
+            </label>
+            <span class="card-note small">
+            (If you check this, you don’t need to mark individual guests as attending.)
+            </span>
+        </div>
 
         <button type="submit" class="btn primary form-submit">
           Submit RSVP
@@ -441,6 +470,25 @@
       <div id="rsvp-success" class="hidden" style="text-align:center; margin-top:2rem; font-size:1.2rem; color:var(--leaf);">
         Thank you! Your RSVP has been received. We can't wait to celebrate with you!
       </div>
+    </div>
+  </section>
+
+  <section id="photos" class="section">
+    <div class="container">
+  
+      <h2 class="section-title">Gallery</h2>
+      <!-- <p class="section-intro">A few of our favorite moments together 💛</p> -->
+  
+      <div class="photo-gallery">
+  
+        <img src="images/couple-2.jpg" alt="Anna & Matthew" />
+        <img src="images/couple-7.jpg" alt="Anna & Matthew" />
+        <img src="images/couple-3.jpg" alt="Anna & Matthew" />
+        <!-- <img src="images/couple-4.jpg" alt="Anna & Matthew" /> -->
+        <img src="images/couple-5.jpg" alt="Anna & Matthew" />
+        <img src="images/couple-6.jpg" alt="Anna & Matthew" />
+      </div>
+  
     </div>
   </section>
 

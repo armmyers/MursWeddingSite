@@ -752,3 +752,46 @@ body::after {
     justify-content: space-between;
   }
 }
+
+.travel-map {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.travel-map img {
+  width: min(800px, 90%);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  border: 2px solid rgba(255,255,255,0.85);
+}
+
+/* --- PHOTO GALLERY SECTION --- */
+
+.photo-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.photo-gallery img {
+  height: 450px;          /* good for vertical images */
+  width: auto;            /* prevents distortion */
+  object-fit: cover;
+  border-radius: 20px;    /* soft rounded edges */
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+  transition: transform .3s ease;
+}
+
+.photo-gallery img:hover {
+  transform: scale(1.04); /* cute interactive zoom */
+}
+
+@media (max-width: 700px) {
+  .photo-gallery img {
+    height: 300px;  /* smaller on mobile */
+  }
+}
