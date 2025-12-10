@@ -270,208 +270,134 @@
     </div>
   </section> -->
 
-  <!-- RSVP -->
-  <section id="rsvp" class="section section-alt">
+<!-- ==================== RSVP SECTION - REPLACE THIS ENTIRE SECTION ==================== -->
+<section id="rsvp" class="section section-alt">
     <div class="container">
       <h2 class="section-title">RSVP</h2>
       <p class="section-intro">
         We can’t wait to celebrate with you. Please start by entering your
         <strong>last name</strong> to find your party.
       </p>
-
+  
       <form
         name="rsvp"
         method="POST"
         data-netlify="true"
-        netlify-honeypot="bot-field"
+        data-netlify-honeypot="bot-field"
         class="rsvp-form card"
+        id="rsvp-form"
       >
         <input type="hidden" name="form-name" value="rsvp" />
-        <p class="hidden">
-          <label>
-            Don’t fill this out if you're human:
-            <input name="bot-field" />
-          </label>
-        </p>
-
-        <!-- Meta fields Netlify will store -->
+        <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  
+        <!-- Hidden fields that Netlify needs to know about (even if empty) -->
+        <input type="hidden" name="guest_name" />
+        <input type="hidden" name="guest_attending" />
+        <input type="hidden" name="guest_friday" />
+  
+        <!-- Hidden fields for party info -->
         <input type="hidden" id="selected-party" name="selected_party" />
         <input type="hidden" id="selected-group" name="selected_group" />
         <input type="hidden" id="lookup-mode" name="lookup_mode" value="party" />
         <input type="hidden" id="lookup-last-name" name="lookup_last_name" />
-        <input type="hidden" id="party-guests-summary" name="party_guests_summary" />
-
+  
         <!-- Last name lookup -->
         <div class="form-grid">
           <div class="form-field">
             <label for="last-name-lookup">Enter your last name*</label>
-            <input
-              type="text"
-              id="last-name-lookup"
-              autocomplete="family-name"
-              required
-            />
+            <input type="text" id="last-name-lookup" autocomplete="family-name" required />
           </div>
           <div class="form-field">
             <label>&nbsp;</label>
-            <button type="button" id="lookup-button" class="btn outline">
-              Find my party
-            </button>
+            <button type="button" id="lookup-button" class="btn outline">Find my party</button>
           </div>
         </div>
-
+  
         <p id="lookup-message" class="section-intro small" style="margin-top: 0.4rem;"></p>
-
-        <!-- If there are multiple sub-parties with the same last name -->
+  
+        <!-- Multiple parties with same last name -->
         <div id="party-choice-container" class="form-grid hidden">
           <div class="form-field">
             <label for="party-choice">We found multiple parties with that last name. Which one are you?</label>
             <select id="party-choice"></select>
           </div>
         </div>
-
-        <!-- Dynamic per-guest RSVP fields go here -->
+  
+        <!-- Dynamic guest rows appear here -->
         <div id="party-guests-container" class="form-grid hidden"></div>
-
-        <!-- Party-level info (email, hotel, notes) -->
+  
+        <!-- Party-level fields -->
         <div id="party-extra-container" class="form-grid hidden">
-            <div class="form-field">
-              <label for="party-email">Email for your party</label>
-              <input
-                type="email"
-                id="party-email"
-                name="party_email"
-                placeholder="So we can reach you if anything changes"
-              />
-            </div>
-          
-            <div class="form-field">
-              <label for="hotel-interest">Interested in a hotel block?</label>
-              <select id="hotel-interest" name="hotel_interest">
-                <option value="">Please choose</option>
-                <option value="yes">Yes, please send us hotel block info</option>
-                <option value="no">No, we’ll book our own lodging</option>
-                <option value="maybe">Maybe / not sure yet</option>
-              </select>
-            </div>
-          
-            <!-- NEW: whole-party unable-to-attend checkbox -->
-            <!-- <div class="form-field">
-              <label class="inline-label">
-                <input
-                  type="checkbox"
-                  id="party-unable-attend"
-                  name="party_unable_attend"
-                  value="yes"
-                />
-                Not able to attend the wedding or welcome party
-              </label>
-              <span class="card-note small">
-                (If you check this, you don’t need to mark individual guests as attending.)
-              </span>
-            </div> -->
-          
-            <div class="form-field">
-              <label for="party-dietary">Dietary notes for your party</label>
-              <textarea
-                id="party-dietary"
-                name="party_dietary"
-                rows="2"
-                placeholder="Kosher-style requests, vegetarian, allergies, etc."
-              ></textarea>
-            </div>
-          
-            <div class="form-field">
-              <label for="party-notes">Notes for the couple</label>
-              <textarea id="party-notes" name="party_notes" rows="3"></textarea>
-            </div>
+          <div class="form-field">
+            <label for="party-email">Email for your party</label>
+            <input type="email" id="party-email" name="party_email" placeholder="So we can reach you if anything changes" />
           </div>
-          
-
-        <!-- Manual / fallback RSVP if lookup fails -->
+          <div class="form-field">
+            <label for="hotel-interest">Interested in a hotel block?</label>
+            <select id="hotel-interest" name="hotel_interest">
+              <option value="">Please choose</option>
+              <option value="yes">Yes, please send us hotel block info for Saturday Only</option>
+              <option value="yes">Yes, for Sunday Only</option>
+              <option value="yes">Yes, for both days</option>
+              <option value="no">No, we’ll book our own lodging</option>
+              <option value="maybe">Maybe / not sure yet</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="party-dietary">Dietary notes for your party</label>
+            <textarea id="party-dietary" name="party_dietary" rows="2" placeholder="Kosher-style requests, vegetarian, allergies, etc."></textarea>
+          </div>
+          <div class="form-field">
+            <label for="party-notes">Notes for the couple</label>
+            <textarea id="party-notes" name="party_notes" rows="3"></textarea>
+          </div>
+        </div>
+  
+        <!-- Manual fallback -->
         <div id="simple-rsvp-container" class="hidden">
           <hr style="margin: 1.6rem 0;" />
-          <p class="section-intro small">
-            Can’t find your name? No problem. You can still RSVP for yourself here and
-            we’ll match things up on our side.
-          </p>
-
+          <p class="section-intro small">Can’t find your name? No problem — RSVP here and we’ll match you manually.</p>
           <div class="form-grid">
+            <div class="form-field"><label for="manual-name">Your full name*</label><input type="text" id="manual-name" name="manual_name" required /></div>
+            <div class="form-field"><label for="manual-email">Email*</label><input type="email" id="manual-email" name="manual_email" required /></div>
             <div class="form-field">
-              <label for="manual-name">Your full name*</label>
-              <input type="text" id="manual-name" name="manual_name" />
-            </div>
-            <div class="form-field">
-              <label for="manual-email">Email*</label>
-              <input type="email" id="manual-email" name="manual_email" />
-            </div>
-            <div class="form-field">
-              <label for="manual-attending">Will you attend the wedding on Saturday?</label>
+              <label for="manual-attending">Saturday wedding</label>
               <select id="manual-attending" name="manual_attending">
-                <option value="">Please choose</option>
                 <option value="accepts">Happily accepts</option>
                 <option value="declines">Regretfully declines</option>
               </select>
             </div>
             <div class="form-field">
-              <label for="manual-friday">Coming to the Friday night welcome party?</label>
+              <label for="manual-friday">Friday welcome party</label>
               <select id="manual-friday" name="manual_friday">
-                <option value="">Please choose</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
-                <option value="maybe">Maybe / not sure yet</option>
+                <option value="maybe">Maybe</option>
               </select>
             </div>
-            <div class="form-field">
-              <label for="manual-dietary">Dietary restrictions</label>
-              <input
-                type="text"
-                id="manual-dietary"
-                name="manual_dietary"
-                placeholder="Kosher-style, vegetarian, allergies, etc."
-              />
-            </div>
-            <div class="form-field">
-              <label for="manual-notes">Notes for the couple</label>
-              <textarea id="manual-notes" name="manual_notes" rows="3"></textarea>
-            </div>
+            <div class="form-field"><label for="manual-dietary">Dietary notes</label><input type="text" id="manual-dietary" name="manual_dietary" /></div>
+            <div class="form-field"><label for="manual-notes">Notes</label><textarea id="manual-notes" name="manual_notes" rows="3"></textarea></div>
           </div>
         </div>
-
-        <!-- <button
-          type="button"
-          id="manual-rsvp-toggle"
-          class="btn outline"
-          style="margin-top: 1rem;"
-        >
-          I can’t find my name
-        </button> -->
-
-        <!-- Whole-party unable-to-attend (always visible) -->
+  
+        <!-- Cannot attend checkbox -->
         <div class="form-field" style="margin-top: 1.2rem;">
-            <label class="inline-label">
-            <input
-                type="checkbox"
-                id="party-unable-attend"
-                name="party_unable_attend"
-                value="yes"
-            />
+          <label class="inline-label">
+            <input type="checkbox" id="party-unable-attend" name="party_unable_attend" value="yes" />
             Not able to attend the wedding or welcome party
-            </label>
-            <span class="card-note small">
-            (If you check this, you don’t need to mark individual guests as attending.)
-            </span>
+          </label>
+          <span class="card-note small">(If checked, everyone will be marked as not attending.)</span>
         </div>
-
-        <button type="submit" class="btn primary form-submit">
-          Submit RSVP
-        </button>
+  
+        <button type="submit" class="btn primary form-submit">Submit RSVP</button>
       </form>
+  
       <div id="rsvp-success" class="hidden" style="text-align:center; margin-top:2rem; font-size:1.2rem; color:var(--leaf);">
         Thank you! Your RSVP has been received. We can't wait to celebrate with you!
       </div>
     </div>
   </section>
+  <!-- ==================== END OF RSVP SECTION ==================== -->
 
   <section id="photos" class="section">
     <div class="container">
