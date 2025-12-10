@@ -336,6 +336,11 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
     const unableToAttend = document.getElementById("party-unable-attend").checked;
 
     // Collect party-level data that will be repeated for each guest
@@ -351,7 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
       party_notes: document.getElementById("party-notes")?.value || "",
     };
 
-    const submissions = [];
+    const allGuests = [];
 
     // Normal party mode - collect each guest's individual data
     if (!guestsContainer.classList.contains("hidden")) {
@@ -366,66 +371,104 @@ document.addEventListener("DOMContentLoaded", function () {
         const satStatus = unableToAttend ? "no" : (attendingSat ? "yes" : "no");
         const friStatus = unableToAttend ? "no" : (attendingFri ? "yes" : "no");
 
-        // Create submission with guest-specific + party-level data
-        submissions.push({
+        allGuests.push({
           guest_name: name,
           guest_attending_saturday: satStatus,
-          guest_attending_friday: friStatus,
-          ...sharedData
+          guest_attending_friday: friStatus
         });
       });
     }
     // Manual mode - single guest submission
     else if (!manualContainer.classList.contains("hidden")) {
       const name = document.getElementById("manual-name").value.trim();
+      if (!name) {
+        alert("Please enter your name.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+        return;
+      }
+      const email = document.getElementById("manual-email").value.trim();
+      if (!email) {
+        alert("Please enter your email.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+        return;
+      }
+      
       const satStatus = document.getElementById("manual-attending").value === "accepts" ? "yes" : "no";
       const friStatus = document.getElementById("manual-friday").value === "yes" ? "yes" : "no";
       
-      submissions.push({
+      allGuests.push({
         guest_name: name,
         guest_attending_saturday: satStatus,
-        guest_attending_friday: friStatus,
-        party_email: document.getElementById("manual-email").value || "",
-        party_dietary: document.getElementById("manual-dietary").value || "",
-        party_notes: document.getElementById("manual-notes").value || "",
-        selected_party: "Manual",
-        selected_group: "",
-        lookup_mode: "manual",
-        lookup_last_name: "",
-        hotel_interest: "",
-        party_unable_attend: "no"
+        guest_attending_friday: friStatus
       });
+      
+      // Override shared data for manual mode
+      sharedData.party_email = email;
+      sharedData.party_dietary = document.getElementById("manual-dietary").value || "";
+      sharedData.party_notes = document.getElementById("manual-notes").value || "";
+      sharedData.selected_party = "Manual Entry";
+      sharedData.lookup_mode = "manual";
     }
 
-    if (submissions.length === 0) {
+    if (allGuests.length === 0) {
       alert("No guests found. Please fill out the form.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
       return;
     }
 
-    // Submit each guest as a separate form submission to Netlify
+    // Store all guest data as JSON in hidden field
+    const allGuestsJson = document.getElementById("all-guests-json");
+    allGuestsJson.value = JSON.stringify(allGuests);
+
+    // Submit each guest sequentially (not in parallel to avoid rate limiting)
     try {
-      await Promise.all(submissions.map(guestData => {
+      for (let i = 0; i < allGuests.length; i++) {
+        const guest = allGuests[i];
+        submitBtn.textContent = `Submitting ${i + 1} of ${allGuests.length}...`;
+        
         const formData = new FormData();
         formData.append("form-name", "rsvp");
         
-        // Add all guest data fields to the form
-        Object.entries(guestData).forEach(([key, value]) => {
+        // Add guest-specific data
+        formData.append("guest_name", guest.guest_name);
+        formData.append("guest_attending_saturday", guest.guest_attending_saturday);
+        formData.append("guest_attending_friday", guest.guest_attending_friday);
+        
+        // Add party-level shared data
+        Object.entries(sharedData).forEach(([key, value]) => {
           formData.append(key, value);
         });
         
-        return fetch("/", { 
+        // Also include all guests JSON on each submission for backup
+        formData.append("all_guests_json", allGuestsJson.value);
+        
+        const response = await fetch("/", { 
           method: "POST", 
           body: formData 
         });
-      }));
+        
+        if (!response.ok) {
+          throw new Error(`Submission failed for ${guest.guest_name}: ${response.status}`);
+        }
+        
+        // Small delay between submissions to avoid rate limiting
+        if (i < allGuests.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 300));
+        }
+      }
 
       // Show success message and hide form
       successEl.classList.remove("hidden");
       form.style.display = "none";
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      document.getElementById("rsvp").scrollIntoView({ behavior: "smooth" });
     } catch (err) {
       console.error("Submission error:", err);
-      alert("Something went wrong submitting your RSVP. Please try again or email us directly.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+      alert("Something went wrong submitting your RSVP. Please try again or email us directly.\n\nError: " + err.message);
     }
   });
 });
