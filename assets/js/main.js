@@ -1,5 +1,4 @@
-// assets/js/main.js - FULLY FIXED VERSION
-// (Replace your entire current main.js with this)
+// assets/js/main.js - COMPLETE FIXED VERSION WITH PROPER NETLIFY SUBMISSIONS
 
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
@@ -65,7 +64,7 @@ if (countdownEl) {
 }
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// ==================== RSVP LOGIC (THIS IS THE FIXED PART) ====================
+// ==================== RSVP LOGIC (FIXED FOR COMPLETE NETLIFY DATA) ====================
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("rsvp-form");
   const lastNameInput = document.getElementById("last-name-lookup");
@@ -118,12 +117,8 @@ document.addEventListener("DOMContentLoaded", function () {
     { first: "Gustavo", last: "", party: "Maranganti", group: 1 },
     { first: "Sandeep", last: "Sainath", party: "Sainath", group: 1 },
     { first: "Nayara", last: "Paudyal", party: "Sainath", group: 1 },
-  //   { first: "Kunal", last: "Kuldeep", party: "Kuldeep", group: 1 },
-  //   { first: "Micah", last: "Kuldeep", party: "Kuldeep", group: 1 },
     { first: "Alex", last: "Zhao", party: "Zhao", group: 1 },
     { first: "Lisa", last: "Zhao", party: "Zhao", group: 1 },
-  //   { first: "Satya", last: "Godavarthi", party: "Godavarthi", group: 1 },
-  //   { first: "Plus One", last: "Godavarthi", party: "Godavarthi", group: 1 },
     { first: "Sandy", last: "Backerman", party: "Backerman", group: 1 },
     { first: "David", last: "Backerman", party: "Backerman", group: 1 },
     { first: "Lynda", last: "Kreitzer", party: "Kreitzer", group: 1 },
@@ -131,8 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
     { first: "Robert", last: "Mulligan", party: "Mulligan", group: 1 },
     { first: "Victoria", last: "Mulligan", party: "Mulligan", group: 1 },
     { first: "Mary Alice", last: "Walshe", party: "Walshe", group: 1 },
-  //   { first: "Bri", last: "Sime", party: "Sime", group: 1 },
-  //   { first: "Adam", last: "Sime", party: "Sime", group: 1 },
     { first: "Ed", last: "Pajaziti", party: "Pajaziti", group: 1 },
     { first: "Lily", last: "Pajaziti", party: "Pajaziti", group: 1 },
     { first: "John", last: "Kenney", party: "Kenney", group: 1 },
@@ -188,7 +181,34 @@ document.addEventListener("DOMContentLoaded", function () {
     { first: "Jacob", last: "David", party: "David", group: 1 },
     { first: "Thomas", last: "Pettet", party: "Pettet", group: 1 },
     { first: "Plus One", last: "Pettet", party: "Pettet", group: 1 },
-    { first: "Chris", last: "Jre...(truncated 1438 characters)...", group: 1 },
+    { first: "Chris", last: "Jreissati", party: "Jreissati", group: 1 },
+    { first: "Lauren", last: "Jreissati", party: "Jreissati", group: 1 },
+    { first: "Andrea", last: "Mayer", party: "Mayer", group: 1 },
+    { first: "Colette", last: "Mayer", party: "Mayer", group: 1 },
+    { first: "Mark", last: "Fishman", party: "Fishman", group: 1 },
+    { first: "Sue", last: "Fishman", party: "Fishman", group: 1 },
+    { first: "Maura", last: "Fishman", party: "Fishman", group: 1 },
+    { first: "Brian", last: "Fishman", party: "Fishman", group: 1 },
+    { first: "Randy", last: "Kirsch", party: "Kirsch", group: 1 },
+    { first: "Ronnie", last: "Kirsch", party: "Kirsch", group: 1 },
+    { first: "Marshall", last: "Kirsch", party: "Kirsch", group: 1 },
+    { first: "David", last: "Cooper", party: "Cooper", group: 1 },
+    { first: "Shelly", last: "Cooper", party: "Cooper", group: 1 },
+    { first: "Eli", last: "Friedman", party: "Friedman", group: 1 },
+    { first: "Melissa", last: "Friedman", party: "Friedman", group: 1 },
+    { first: "Michael", last: "Yurowitz", party: "Yurowitz", group: 1 },
+    { first: "Melanie", last: "Yurowitz", party: "Yurowitz", group: 1 },
+    { first: "Jeff", last: "Yurowitz", party: "Yurowitz", group: 1 },
+    { first: "Barbara", last: "Yurowitz", party: "Yurowitz", group: 1 },
+    { first: "Rachel", last: "Yurowitz", party: "Yurowitz", group: 1 },
+    { first: "Danielle", last: "Katz", party: "Katz", group: 1 },
+    { first: "Sabrina", last: "Golumb", party: "Golumb", group: 1 },
+    { first: "Jamie", last: "Golumb", party: "Golumb", group: 1 },
+    { first: "Adam", last: "Katz", party: "Katz", group: 1 },
+    { first: "Ashley", last: "Katz", party: "Katz", group: 1 },
+    { first: "Brandon", last: "Heller", party: "Heller", group: 1 },
+    { first: "Alex", last: "Heller", party: "Heller", group: 1 },
+    { first: "Bill", last: "Bienenfeld", party: "Bienenfeld", group: 1 },
     { first: "Bernice", last: "Bienenfeld", party: "Bienenfeld", group: 1 },
     { first: "Madeline", last: "Murray", party: "Murray", group: 1 },
     { first: "John", last: "Murray", party: "Murray", group: 1 },
@@ -294,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (matches.length === 1) {
       renderGuestsForParty(matches[0]);
-      messageEl.textContent = `Found your party! Please confirm who’s coming.`;
+      messageEl.textContent = `Found your party! Please confirm who's coming.`;
     } else {
       partyChoiceContainer.classList.remove("hidden");
       messageEl.textContent = "Multiple parties found — please select yours:";
@@ -308,74 +328,104 @@ document.addEventListener("DOMContentLoaded", function () {
         const obj = Array.from(PARTY_MAP.values()).find(x => x.party === party && x.group == group);
         if (obj) renderGuestsForParty(obj);
       };
-      renderGuestsForParty(matches[0]); // show first one immediately
+      renderGuestsForParty(matches[0]);
     }
   });
 
-  // SUBMIT — ONE ROW PER GUEST IN NETLIFY
+  // SUBMIT — ONE ROW PER GUEST WITH COMPLETE DATA TO NETLIFY
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const unableToAttend = document.getElementById("party-unable-attend").checked;
 
-    const shared = {
-      selected_party: hiddenParty.value,
-      selected_group: hiddenGroup.value,
-      lookup_mode: hiddenMode.value,
-      lookup_last_name: hiddenLast.value,
+    // Collect party-level data that will be repeated for each guest
+    const sharedData = {
+      selected_party: hiddenParty.value || "",
+      selected_group: hiddenGroup.value || "",
+      lookup_mode: hiddenMode.value || "party",
+      lookup_last_name: hiddenLast.value || "",
       party_email: document.getElementById("party-email")?.value || "",
       hotel_interest: document.getElementById("hotel-interest")?.value || "",
-      party_unable_attend: unableToAttend ? "yes" : "",
+      party_unable_attend: unableToAttend ? "yes" : "no",
       party_dietary: document.getElementById("party-dietary")?.value || "",
       party_notes: document.getElementById("party-notes")?.value || "",
     };
 
     const submissions = [];
 
-    // Normal party mode
+    // Normal party mode - collect each guest's individual data
     if (!guestsContainer.classList.contains("hidden")) {
       document.querySelectorAll(".guest-row").forEach(row => {
         const name = row.querySelector(".guest-name-input").value.trim();
         if (!name) return;
 
-        const sat = unableToAttend ? "no" : (row.querySelector(".guest-attending").checked ? "yes" : "no");
-        const fri = unableToAttend ? "no" : (row.querySelector(".guest-friday").checked ? "yes" : "no");
+        const attendingSat = row.querySelector(".guest-attending").checked;
+        const attendingFri = row.querySelector(".guest-friday").checked;
 
-        submissions.push({ guest_name: name, guest_attending: sat, guest_friday: fri, ...shared });
+        // Determine actual attendance based on "unable to attend" checkbox
+        const satStatus = unableToAttend ? "no" : (attendingSat ? "yes" : "no");
+        const friStatus = unableToAttend ? "no" : (attendingFri ? "yes" : "no");
+
+        // Create submission with guest-specific + party-level data
+        submissions.push({
+          guest_name: name,
+          guest_attending_saturday: satStatus,
+          guest_attending_friday: friStatus,
+          ...sharedData
+        });
       });
     }
-    // Manual mode
+    // Manual mode - single guest submission
     else if (!manualContainer.classList.contains("hidden")) {
       const name = document.getElementById("manual-name").value.trim();
-      const sat = document.getElementById("manual-attending").value === "accepts" ? "yes" : "no";
-      const fri = document.getElementById("manual-friday").value === "yes" ? "yes" : "no";
+      const satStatus = document.getElementById("manual-attending").value === "accepts" ? "yes" : "no";
+      const friStatus = document.getElementById("manual-friday").value === "yes" ? "yes" : "no";
+      
       submissions.push({
         guest_name: name,
-        guest_attending: sat,
-        guest_friday: fri,
-        party_email: document.getElementById("manual-email").value,
-        party_dietary: document.getElementById("manual-dietary").value,
-        party_notes: document.getElementById("manual-notes").value,
+        guest_attending_saturday: satStatus,
+        guest_attending_friday: friStatus,
+        party_email: document.getElementById("manual-email").value || "",
+        party_dietary: document.getElementById("manual-dietary").value || "",
+        party_notes: document.getElementById("manual-notes").value || "",
         selected_party: "Manual",
+        selected_group: "",
         lookup_mode: "manual",
+        lookup_last_name: "",
+        hotel_interest: "",
+        party_unable_attend: "no"
       });
     }
 
-    if (submissions.length === 0) return alert("No guests found.");
+    if (submissions.length === 0) {
+      alert("No guests found. Please fill out the form.");
+      return;
+    }
 
+    // Submit each guest as a separate form submission to Netlify
     try {
-      await Promise.all(submissions.map(data => {
-        const fd = new FormData();
-        fd.append("form-name", "rsvp");
-        Object.entries(data).forEach(([k, v]) => fd.append(k, v));
-        return fetch("/", { method: "POST", body: fd });
+      await Promise.all(submissions.map(guestData => {
+        const formData = new FormData();
+        formData.append("form-name", "rsvp");
+        
+        // Add all guest data fields to the form
+        Object.entries(guestData).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        
+        return fetch("/", { 
+          method: "POST", 
+          body: formData 
+        });
       }));
 
+      // Show success message and hide form
       successEl.classList.remove("hidden");
       form.style.display = "none";
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
-      alert("Something went wrong. Please try again or email us directly.");
+      console.error("Submission error:", err);
+      alert("Something went wrong submitting your RSVP. Please try again or email us directly.");
     }
   });
 });
