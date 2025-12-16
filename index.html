@@ -278,6 +278,9 @@
         We can’t wait to celebrate with you. Please start by entering your
         <strong>last name</strong> to find your party.
       </p>
+      <p class="section-intro">
+        We kindly ask that you RSVP by April 30th, 2026.
+      </p>
   
       <form
         name="rsvp"
@@ -353,6 +356,13 @@
             <label for="party-notes">Notes for the couple</label>
             <textarea id="party-notes" name="party_notes" rows="3"></textarea>
           </div>
+          <div class="form-field" style="margin-top: 1.2rem;">
+            <label class="inline-label">
+              <input type="checkbox" id="party-unable-attend" name="party_unable_attend" value="yes" />
+              Not able to attend the wedding or welcome party
+            </label>
+            <span class="card-note small">(If checked, everyone will be marked as not attending.)</span>
+          </div>
         </div>
   
         <!-- Manual fallback -->
@@ -380,16 +390,23 @@
             <div class="form-field"><label for="manual-dietary">Dietary notes</label><input type="text" id="manual-dietary" name="manual_dietary" /></div>
             <div class="form-field"><label for="manual-notes">Notes</label><textarea id="manual-notes" name="manual_notes" rows="3"></textarea></div>
           </div>
+          <div class="form-field" style="margin-top: 1.2rem;">
+            <label class="inline-label">
+              <input type="checkbox" id="party-unable-attend" name="party_unable_attend" value="yes" />
+              Not able to attend the wedding or welcome party
+            </label>
+            <span class="card-note small">(If checked, everyone will be marked as not attending.)</span>
+          </div>
         </div>
   
         <!-- Cannot attend checkbox -->
-        <div class="form-field" style="margin-top: 1.2rem;">
+        <!-- <div class="form-field" style="margin-top: 1.2rem;">
           <label class="inline-label">
             <input type="checkbox" id="party-unable-attend" name="party_unable_attend" value="yes" />
             Not able to attend the wedding or welcome party
           </label>
           <span class="card-note small">(If checked, everyone will be marked as not attending.)</span>
-        </div>
+        </div> -->
   
         <button type="submit" class="btn primary form-submit">Submit RSVP</button>
       </form>

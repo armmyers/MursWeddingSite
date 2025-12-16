@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
     { first: "Adharsh", last: "Ganesan", party: "Ganesan", group: 1 },
     { first: "Abhinaya", last: "Ganesan", party: "Ganesan", group: 1 },
     { first: "Stephen", last: "Phillips", party: "Phillips", group: 1 },
-    { first: "Jackie", last: "Phillips", party: "Phillips", group: 1 },
+    { first: "Jacquie", last: "Phillips", party: "Phillips", group: 1 },
     { first: "Haley", last: "Payne", party: "Payne", group: 1 },
     { first: "Stone", last: "Payne", party: "Payne", group: 1 },
     { first: "Mary", last: "Meberg", party: "Meberg", group: 1 },
