@@ -103,6 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
   
     { first: "Kimberle", last: "Hickey", party: "Hickey", group: 1 },
     { first: "Michael", last: "Hickey", party: "Hickey", group: 1 },
+    { first: "Keegan", last: "Fasone", party: "Hickey", group: 1 },
+    { first: "Jacob", last: "Fasone", party: "Hickey", group: 1 },
     { first: "Debbie", last: "Levy", party: "Levy", group: 1 },
     { first: "Effie", last: "Levy", party: "Levy", group: 1 },
     { first: "Adharsh", last: "Ganesan", party: "Ganesan", group: 1 },
@@ -182,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
     { first: "Claire", last: "McGilvary", party: "McGilvary", group: 1 },
     { first: "Jacob", last: "David", party: "David", group: 1 },
     { first: "Thomas", last: "Pettet", party: "Pettet", group: 1 },
+    { first: "Marg", last: "Markwell", party: "Pettet", group: 1 },
     { first: "Bernice", last: "Bienenfeld", party: "Bienenfeld", group: 1 },
     { first: "Madeline", last: "Murray", party: "Murray", group: 1 },
     { first: "John", last: "Murray", party: "Murray", group: 1 },
