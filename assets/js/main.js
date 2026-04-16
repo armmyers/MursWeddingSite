@@ -373,7 +373,9 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting...";
 
-    const unableToAttend = document.getElementById("party-unable-attend").checked;
+    const unableToAttend =
+      document.getElementById("party-unable-attend")?.checked ||
+      document.getElementById("manual-unable-attend")?.checked || false;
 
     // Collect party-level data that will be repeated for each guest
     const sharedData = {

@@ -301,6 +301,13 @@
         <input type="hidden" name="guest_attending_saturday" />
         <input type="hidden" name="guest_attending_friday" />
         <input type="hidden" name="guest_meal" />
+        <input type="hidden" name="manual_meal" />
+        <input type="hidden" name="manual_name" />
+        <input type="hidden" name="manual_email" />
+        <input type="hidden" name="manual_attending" />
+        <input type="hidden" name="manual_friday" />
+        <input type="hidden" name="manual_dietary" />
+        <input type="hidden" name="party_unable_attend" />
         <!-- JSON field to store all guests data in one submission -->
         <input type="hidden" name="all_guests_json" id="all-guests-json" />
   
@@ -412,10 +419,10 @@
           </div>
           <div class="form-field" style="margin-top: 1.2rem;">
             <label class="inline-label">
-              <input type="checkbox" id="party-unable-attend" name="party_unable_attend" value="yes" />
+              <input type="checkbox" id="manual-unable-attend" name="party_unable_attend" value="yes" />
               Not able to attend the wedding or welcome party
             </label>
-            <span class="card-note small">(If checked, everyone will be marked as not attending.)</span>
+            <span class="card-note small">(If checked, you will be marked as not attending.)</span>
           </div>
         </div>
   
