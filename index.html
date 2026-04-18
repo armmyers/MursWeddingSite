@@ -300,6 +300,14 @@
         <input type="hidden" name="guest_name" />
         <input type="hidden" name="guest_attending_saturday" />
         <input type="hidden" name="guest_attending_friday" />
+        <input type="hidden" name="guest_meal" />
+        <input type="hidden" name="manual_meal" />
+        <input type="hidden" name="manual_name" />
+        <input type="hidden" name="manual_email" />
+        <input type="hidden" name="manual_attending" />
+        <input type="hidden" name="manual_friday" />
+        <input type="hidden" name="manual_dietary" />
+        <input type="hidden" name="party_unable_attend" />
         <!-- JSON field to store all guests data in one submission -->
         <input type="hidden" name="all_guests_json" id="all-guests-json" />
   
@@ -333,6 +341,17 @@
   
         <!-- Dynamic guest rows appear here -->
         <div id="party-guests-container" class="form-grid hidden"></div>
+
+        <!-- Meal choices + dietary (shown together after guest rows) -->
+        <div id="party-meal-section" class="hidden" style="margin-top: 1.6rem;">
+          <h4 style="font-family: 'Playfair Display', serif; font-size: 1.05rem; margin: 0 0 0.3rem;">Dinner Selection</h4>
+          <p style="font-size: 0.88rem; color: var(--muted); margin: 0 0 1rem;">Please choose a meal for each guest attending Saturday's reception.</p>
+          <div id="party-meals-container"></div>
+          <div class="form-field" style="margin-top: 1.2rem;">
+            <label for="party-dietary">Allergies or dietary restrictions</label>
+            <textarea id="party-dietary" name="party_dietary" rows="2" placeholder="e.g. gluten-free, nut allergy, kosher-style, vegetarian…"></textarea>
+          </div>
+        </div>
   
         <!-- Party-level fields -->
         <div id="party-extra-container" class="form-grid hidden">
@@ -350,10 +369,6 @@
               <option value="no">No, we’ll book our own lodging</option>
               <option value="maybe">Maybe / not sure yet</option>
             </select>
-          </div>
-          <div class="form-field">
-            <label for="party-dietary">Dietary notes for your party</label>
-            <textarea id="party-dietary" name="party_dietary" rows="2" placeholder="Kosher-style requests, vegetarian, allergies, etc."></textarea>
           </div>
           <div class="form-field">
             <label for="party-notes">Notes for the couple</label>
@@ -390,15 +405,24 @@
                 <option value="maybe">Maybe</option>
               </select>
             </div>
-            <div class="form-field"><label for="manual-dietary">Dietary notes</label><input type="text" id="manual-dietary" name="manual_dietary" /></div>
-            <div class="form-field"><label for="manual-notes">Notes</label><textarea id="manual-notes" name="manual_notes" rows="3"></textarea></div>
+            <div class="form-field" style="grid-column: 1 / -1;">
+              <label for="manual-meal">Dinner selection</label>
+              <select id="manual-meal" name="manual_meal">
+                <option value="">— Please choose —</option>
+                <option value="filet">Filet of Beef — grass-fed beef with confit fondant potatoes, balsamic caramelized pearl onions & bruleed bleu cheese</option>
+                <option value="snapper">Seared Red Snapper — tomato-fennel salad, potato-leek purée</option>
+                <option value="pappardelle">Mushroom Pappardelle — local sautéed mushrooms, caramelized onions, cognac-sage cream & shaved cured duck yolk</option>
+              </select>
+            </div>
+            <div class="form-field" style="grid-column: 1 / -1;"><label for="manual-dietary">Allergies or dietary restrictions</label><textarea id="manual-dietary" name="manual_dietary" rows="2" placeholder="e.g. gluten-free, nut allergy, kosher-style, vegetarian…"></textarea></div>
+            <div class="form-field" style="grid-column: 1 / -1;"><label for="manual-notes">Notes for the couple</label><textarea id="manual-notes" name="manual_notes" rows="3"></textarea></div>
           </div>
           <div class="form-field" style="margin-top: 1.2rem;">
             <label class="inline-label">
-              <input type="checkbox" id="party-unable-attend" name="party_unable_attend" value="yes" />
+              <input type="checkbox" id="manual-unable-attend" name="party_unable_attend" value="yes" />
               Not able to attend the wedding or welcome party
             </label>
-            <span class="card-note small">(If checked, everyone will be marked as not attending.)</span>
+            <span class="card-note small">(If checked, you will be marked as not attending.)</span>
           </div>
         </div>
   

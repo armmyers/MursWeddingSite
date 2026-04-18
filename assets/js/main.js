@@ -132,8 +132,8 @@ document.addEventListener("DOMContentLoaded", function () {
     { first: "Lily", last: "Pajaziti", party: "Pajaziti", group: 1 },
     { first: "John", last: "Kenney", party: "Kenney", group: 1 },
     { first: "Kathleen", last: "Kenney", party: "Kenney", group: 1 },
-    { first: "John", last: "Carruba", party: "Carruba", group: 1 },
-    { first: "Samantha", last: "Carruba", party: "Carruba", group: 1 },
+    { first: "Jonathan", last: "Carrubba", party: "Carrubba", group: 1 },
+    { first: "Samantha", last: "Carrubba", party: "Carrubba", group: 1 },
     { first: "Brandon", last: "Rohrbaugh", party: "Rohrbaugh", group: 1 },
     { first: "Jess", last: "Rohrbaugh", party: "Rohrbaugh", group: 1 },
     { first: "Aaron", last: "Rohrbaugh", party: "Rohrbaugh", group: 2 },
@@ -253,6 +253,30 @@ document.addEventListener("DOMContentLoaded", function () {
     guestsContainer.innerHTML = "";
     guestsContainer.classList.add("hidden");
     partyExtraContainer.classList.add("hidden");
+    const mealSection = document.getElementById("party-meal-section");
+    if (mealSection) mealSection.classList.add("hidden");
+    const mealsContainer = document.getElementById("party-meals-container");
+    if (mealsContainer) mealsContainer.innerHTML = "";
+  }
+
+  const MEAL_OPTIONS = [
+    { value: "", label: "— Please choose —" },
+    { value: "filet", label: "Filet of Beef — grass-fed beef with confit fondant potatoes, balsamic caramelized pearl onions & bruleed bleu cheese" },
+    { value: "snapper", label: "Seared Red Snapper — tomato-fennel salad, potato-leek purée" },
+    { value: "pappardelle", label: "Mushroom Pappardelle — local sautéed mushrooms, caramelized onions, cognac-sage cream & shaved cured duck yolk" },
+  ];
+
+  function buildMealOption(guestName, index) {
+    const options = MEAL_OPTIONS.map(o =>
+      `<option value="${o.value}">${o.label}</option>`
+    ).join("");
+    return `
+      <div class="meal-row" data-guest-index="${index}" style="display:flex; flex-direction:column; gap:0.25rem; margin-bottom:0.85rem;">
+        <label style="font-weight:600; font-size:0.88rem;">${guestName}</label>
+        <select class="guest-meal-select" style="border-radius:999px; border:1px solid var(--border); padding:0.55rem 0.85rem; font:inherit;">
+          ${options}
+        </select>
+      </div>`;
   }
 
   function renderGuestsForParty(partyObj) {
@@ -260,7 +284,9 @@ document.addEventListener("DOMContentLoaded", function () {
     hiddenParty.value = partyObj.party;
     hiddenGroup.value = partyObj.group;
 
-    partyObj.guests.forEach(g => {
+    const mealsContainer = document.getElementById("party-meals-container");
+
+    partyObj.guests.forEach((g, index) => {
       const fullName = g.first + (g.last ? " " + g.last : "");
       const row = document.createElement("div");
       row.className = "guest-row";
@@ -278,10 +304,25 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
       guestsContainer.appendChild(row);
+
+      // Add corresponding meal row
+      const mealDiv = document.createElement("div");
+      mealDiv.innerHTML = buildMealOption(fullName, index);
+      mealsContainer.appendChild(mealDiv.firstElementChild);
+
+      // Toggle meal row visibility based on Saturday attendance
+      const attendingCheckbox = row.querySelector(".guest-attending");
+      const mealRow = mealsContainer.lastElementChild;
+      const updateMealVisibility = () => {
+        mealRow.style.display = attendingCheckbox.checked ? "flex" : "none";
+      };
+      attendingCheckbox.addEventListener("change", updateMealVisibility);
     });
 
     guestsContainer.classList.remove("hidden");
     partyExtraContainer.classList.remove("hidden");
+    const mealSection = document.getElementById("party-meal-section");
+    if (mealSection) mealSection.classList.remove("hidden");
   }
 
   lookupBtn.addEventListener("click", () => {
@@ -332,7 +373,9 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting...";
 
-    const unableToAttend = document.getElementById("party-unable-attend").checked;
+    const unableToAttend =
+      document.getElementById("party-unable-attend")?.checked ||
+      document.getElementById("manual-unable-attend")?.checked || false;
 
     // Collect party-level data that will be repeated for each guest
     const sharedData = {
@@ -351,7 +394,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Normal party mode - collect each guest's individual data
     if (!guestsContainer.classList.contains("hidden")) {
-      document.querySelectorAll(".guest-row").forEach(row => {
+      const mealSelects = document.querySelectorAll(".guest-meal-select");
+      document.querySelectorAll(".guest-row").forEach((row, index) => {
         const name = row.querySelector(".guest-name-input").value.trim();
         if (!name) return;
 
@@ -362,10 +406,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const satStatus = unableToAttend ? "no" : (attendingSat ? "yes" : "no");
         const friStatus = unableToAttend ? "no" : (attendingFri ? "yes" : "no");
 
+        const mealSelect = mealSelects[index];
+        const meal = (satStatus === "yes" && mealSelect) ? mealSelect.value : "";
+
         allGuests.push({
           guest_name: name,
           guest_attending_saturday: satStatus,
-          guest_attending_friday: friStatus
+          guest_attending_friday: friStatus,
+          guest_meal: meal
         });
       });
     }
@@ -392,7 +440,8 @@ document.addEventListener("DOMContentLoaded", function () {
       allGuests.push({
         guest_name: name,
         guest_attending_saturday: satStatus,
-        guest_attending_friday: friStatus
+        guest_attending_friday: friStatus,
+        guest_meal: satStatus === "yes" ? (document.getElementById("manual-meal")?.value || "") : ""
       });
       
       // Override shared data for manual mode
@@ -427,6 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.append("guest_name", guest.guest_name);
         formData.append("guest_attending_saturday", guest.guest_attending_saturday);
         formData.append("guest_attending_friday", guest.guest_attending_friday);
+        formData.append("guest_meal", guest.guest_meal || "");
         
         // Add party-level shared data
         Object.entries(sharedData).forEach(([key, value]) => {
